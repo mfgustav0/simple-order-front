@@ -1,4 +1,16 @@
-<script lang="ts"></script>
+<script lang="ts" setup>
+  import { useAuthStore } from '@/plugins/vuex';
+  import { useRouter } from 'vue-router';
+
+  const store = useAuthStore();
+  const router = useRouter();
+
+  async function logout () {
+    store.dispatch('logout')
+
+    await router.push('/');
+  }
+</script>
 
 <template>
   <v-app-bar class="px-10">
@@ -8,10 +20,24 @@
       </v-btn>
     </template>
 
-    <v-btn
-      prepend-icon="mdi-account"
-      text="Entrar"
-      to="/account/login"
-    />
+    <template v-if="!store.state.isAuthenticated">
+      <v-btn
+        prepend-icon="mdi-account"
+        text="Entrar"
+        to="/account/login"
+      />
+    </template>
+    <template v-else>
+      <v-btn
+        prepend-icon="mdi-account"
+        text="Me"
+        to="/account/me"
+      />
+      <v-btn
+        prepend-icon="mdi-exit-to-app"
+        text="Sair"
+        @click.prevent="logout"
+      />
+    </template>
   </v-app-bar>
 </template>

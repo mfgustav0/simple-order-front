@@ -5,6 +5,7 @@
  */
 
 // Composables
+import { useAuthStore } from '@/plugins/vuex'
 import { createRouter, createWebHistory } from 'vue-router/auto'
 import { routes } from 'vue-router/auto-routes'
 
@@ -26,6 +27,25 @@ router.onError((err, to) => {
   } else {
     console.error(err)
   }
+})
+
+router.beforeEach(async to => {
+  const userStore = useAuthStore();
+
+  await userStore.dispatch('init');
+
+  if(to.fullPath.includes('account/login') && userStore.state.isAuthenticated) {
+    return { path: '/', force: true };
+  }
+
+  if (!userStore.state.isAuthenticated && !to.fullPath.includes('account/login')) {
+    if(to.fullPath.includes('account/me') || to.fullPath.includes('orders')) {
+      console.log('redirect')
+      return { path: '/account/login', force: true };
+    }
+  }
+
+  return true;
 })
 
 router.isReady().then(() => {
