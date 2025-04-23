@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { type Order } from '@/entities/order';
 import type { Axios } from 'axios';
 
@@ -13,6 +14,8 @@ export interface OrderGateway {
   getById(id: string): Promise<Order>;
 
   createOrder(input: any): Promise<Order>;
+
+  finish(input: { orderId: string }): Promise<Order>;
 
   addItem(input: { orderId: string; productId: string; quantity: number }): Promise<{ id: string }>;
 
@@ -89,6 +92,19 @@ export class OrderGatewayAxios implements OrderGateway {
     });
 
     return response.data as Order;
+  }
+
+  async finish (input: { orderId: string; }): Promise<Order> {
+    const headers: any = {};
+    if(this.token) {
+      headers['Authorization'] = 'Bearer ' + this.token;
+    }
+
+    const response = await this.httpClient.patch(`/orders/${input.orderId}/finish`, {}, {
+      headers,
+    });
+
+    return response.data;
   }
 
   async addItem (input: { orderId: string; productId: string; quantity: number }): Promise<{ id: string }> {

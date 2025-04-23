@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import { computed, inject, watch } from 'vue';
+  import { computed, inject, onMounted, watch } from 'vue';
   import { useAuthStore } from './plugins/vuex/auth-store';
   import { useRouter } from 'vue-router';
   import type { OrderGateway } from '@/gateway/order.gateway';
@@ -30,7 +30,18 @@
 
       orderStore.dispatch('load', orderGateway);
     }
-  )
+  );
+
+  onMounted(async () => {
+    if(!authStore.state.isAuthenticated) {
+      return;
+    }
+
+    const createOrder = new CreateOrder(orderGateway.withToken(authStore.state.token));
+    await createOrder.execute();
+
+    orderStore.dispatch('load', orderGateway);
+  });
 </script>
 
 <template>

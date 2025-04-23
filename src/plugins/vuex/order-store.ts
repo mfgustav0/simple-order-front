@@ -21,9 +21,9 @@ export const store = createStore<State>({
     initialized (state: State) {
       state.initialized = true;
     },
-    updateOrder (state: State, payload: Order) {
-      state.orderId = payload.id;
-      state.totalItems = payload.items?.length ?? 0;
+    updateOrder (state: State, payload: Order | null) {
+      state.orderId = payload?.id ?? null;
+      state.totalItems = payload?.items?.length ?? 0;
     },
   },
   actions: {
@@ -37,12 +37,9 @@ export const store = createStore<State>({
       context.commit('initialized');
     },
     async load (context: Store<State>, orderGateway: OrderGateway) {
-      console.log(orderGateway);
-
       const order = await orderGateway.getCurrentOrder();
-      if(order) {
-        context.commit('updateOrder', order);
-      }
+
+      context.commit('updateOrder', order);
     },
   },
   getters: {
