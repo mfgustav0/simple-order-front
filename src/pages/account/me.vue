@@ -1,18 +1,24 @@
 <script lang="ts" setup>
-  import type { UserGateway } from '@/gateway/user.gateway';
+  import ListOrders from '@/components/Orders/ListOrders.vue';
+  import type { Order } from '@/entities/order';
+  import type { OrderGateway } from '@/gateway/order.gateway';
+  import { useAuthStore } from '@/plugins/vuex';
   import { inject, onMounted, ref } from 'vue';
 
-  const userGateway = inject('userGateway') as UserGateway;
+  const orderGateway = inject('orderGateway') as OrderGateway;
+  const store = useAuthStore();
 
-  const user = ref<unknown>({})
+  const orders = ref<Order[]>([])
 
   onMounted(async () => {
-    user.value = await userGateway.me();
-  })
+    orders.value = await orderGateway.withToken(store.state.token).getAll();
+  });
 </script>
 
 <template>
   <div>
-    {{ user }}
+    <v-card class="mx-auto">
+      <ListOrders :orders="orders" />
+    </v-card>
   </div>
 </template>
