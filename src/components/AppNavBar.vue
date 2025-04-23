@@ -1,14 +1,10 @@
 <script lang="ts" setup>
   import { useAuthStore } from '@/plugins/vuex';
-  import { useRouter } from 'vue-router';
 
   const store = useAuthStore();
-  const router = useRouter();
 
   async function logout () {
     store.dispatch('logout')
-
-    await router.push('/');
   }
 </script>
 

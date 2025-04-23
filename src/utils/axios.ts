@@ -1,3 +1,4 @@
+import { store } from '@/plugins/vuex';
 import axios, { AxiosError } from 'axios';
 
 const instance = axios.create({
@@ -8,22 +9,37 @@ const instance = axios.create({
 });
 
 instance.interceptors.response.use(response => response, function (error: AxiosError) {
-  let message = error.message;
-  if(error.response?.data) {
-    const messagesResponse = error.response.data?.message as Array<string> | string | null;
-    if(messagesResponse) {
-      if(typeof messagesResponse === 'string') {
-        message = messagesResponse;
-      } else if(messagesResponse.length > 0) {
-        message = messagesResponse.join(';\n');
-      }
-    }
+  if(error.status == 401) {
+    store.dispatch('logout');
   }
+
+  const message = sanitizeMessageError(error);
 
   return Promise.reject({
     ...error,
     message,
   });
 });
+
+function sanitizeMessageError (error: AxiosError): string {
+  if(!error.response?.data) {
+    return error.message;
+  }
+
+  const messagesResponse = error.response.data?.message as Array<string> | string | null;
+  if(!messagesResponse) {
+    return error.message;
+  }
+
+  if(typeof messagesResponse === 'string') {
+    return messagesResponse;
+  }
+
+  if(messagesResponse.length > 0) {
+    return messagesResponse.join(';\n');
+  }
+
+  return error.message;
+}
 
 export default instance;
