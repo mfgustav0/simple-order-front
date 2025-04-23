@@ -13,6 +13,8 @@
         :delete-action="false"
         :items="order.items"
       />
+
+      <v-card-title>Total: R$ {{ order.total }}</v-card-title>
     </v-card-item>
   </v-card>
 </template>
