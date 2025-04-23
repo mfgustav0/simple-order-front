@@ -25,7 +25,7 @@
   });
 
   async function addItem (productId: string): Promise<void> {
-    if(!authStore.state.isAuthenticated) {
+    if(!authStore.state.isAuthenticated || !orderStore.state.orderId) {
       return;
     }
 

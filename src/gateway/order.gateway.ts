@@ -3,7 +3,7 @@ import { type Order } from '@/entities/order';
 import type { Axios } from 'axios';
 
 export interface OrderGateway {
-  withToken(token: string): OrderGateway;
+  withToken(token: string | null): OrderGateway;
 
   getAll (): Promise<Order[]>;
 
@@ -23,11 +23,11 @@ export interface OrderGateway {
 }
 
 export class OrderGatewayAxios implements OrderGateway {
-  private token: string = '';
+  private token: string | null = '';
 
   constructor (private readonly httpClient: Axios) {}
 
-  withToken (token: string): OrderGateway {
+  withToken (token: string | null): OrderGateway {
     this.token = token;
 
     return this;

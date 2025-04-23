@@ -8,7 +8,7 @@ const instance = axios.create({
   },
 });
 
-instance.interceptors.response.use(response => response, function (error: AxiosError) {
+instance.interceptors.response.use(response => response, function (error: AxiosError<{ message: Array<string> | string | null }>) {
   if(error.status == 401 && authStore.state.isAuthenticated) {
     authStore.dispatch('logout');
   }
@@ -21,7 +21,7 @@ instance.interceptors.response.use(response => response, function (error: AxiosE
   });
 });
 
-function sanitizeMessageError (error: AxiosError): string {
+function sanitizeMessageError (error: AxiosError<{ message: Array<string> | string | null }>): string {
   if(!error.response?.data) {
     return error.message;
   }

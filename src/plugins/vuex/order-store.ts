@@ -1,7 +1,7 @@
 import type { Order } from '@/entities/order';
 import type { OrderGateway } from '@/gateway/order.gateway';
 import { type InjectionKey } from 'vue';
-import { createStore, Store, useStore } from 'vuex';
+import { type ActionContext, createStore, Store, useStore } from 'vuex';
 
 export interface State {
   initialized: boolean,
@@ -27,7 +27,7 @@ export const store = createStore<State>({
     },
   },
   actions: {
-    async init (context: Store<State>, orderGateway: OrderGateway) {
+    async init (context: ActionContext<State, State>, orderGateway: OrderGateway) {
       if (context.state.initialized) {
         return;
       }
@@ -36,7 +36,7 @@ export const store = createStore<State>({
 
       context.commit('initialized');
     },
-    async load (context: Store<State>, orderGateway: OrderGateway) {
+    async load (context: ActionContext<State, State>, orderGateway: OrderGateway) {
       const order = await orderGateway.getCurrentOrder();
 
       context.commit('updateOrder', order);

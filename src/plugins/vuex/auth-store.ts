@@ -1,5 +1,5 @@
 import { type InjectionKey } from 'vue';
-import { createStore, Store, useStore } from 'vuex';
+import { type ActionContext, createStore, Store, useStore } from 'vuex';
 import Cookies from 'js-cookie';
 
 export interface State {
@@ -26,17 +26,17 @@ export const store = createStore<State>({
     },
   },
   actions: {
-    registerToken (context: Store, payload: { token: string }) {
+    registerToken (context: ActionContext<State, State>, payload: { token: string }) {
       Cookies.set('token', payload.token);
 
       context.commit('setToken', payload);
     },
-    logout (context: Store) {
+    logout (context: ActionContext<State, State>) {
       Cookies.remove('token');
 
       context.commit('setToken', { token: null });
     },
-    init (context: Store<State>) {
+    init (context: ActionContext<State, State>) {
       if (context.state.initialized) {
         return;
       }
