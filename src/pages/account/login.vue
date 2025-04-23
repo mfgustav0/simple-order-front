@@ -5,7 +5,7 @@
   import { useRouter } from 'vue-router';
 
   const authGateway = inject('authGateway') as AuthGateway;
-  const store = useAuthStore();
+  const authStore = useAuthStore();
   const router = useRouter();
 
   const form = ref<{
@@ -63,7 +63,7 @@
         password: form.value.password,
       });
 
-      store.dispatch('registerToken', {
+      authStore.dispatch('registerToken', {
         token: outputLogin.access_token,
       });
 

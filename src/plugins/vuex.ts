@@ -46,8 +46,6 @@ export const store = createStore<State>({
       context.commit('setToken', { token });
 
       context.commit('initialized');
-
-      console.log(context.state.isAuthenticated);
     },
   },
 });

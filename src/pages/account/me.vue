@@ -6,12 +6,12 @@
   import { inject, onMounted, ref } from 'vue';
 
   const orderGateway = inject('orderGateway') as OrderGateway;
-  const store = useAuthStore();
+  const authStore = useAuthStore();
 
   const orders = ref<Order[]>([])
 
   onMounted(async () => {
-    orders.value = await orderGateway.withToken(store.state.token).getAll();
+    orders.value = await orderGateway.withToken(authStore.state.token).getAll();
   });
 </script>
 

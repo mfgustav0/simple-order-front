@@ -4,11 +4,11 @@
   import { useRouter } from 'vue-router';
 
   const router = useRouter();
-  const userStore = useAuthStore();
+  const authStore = useAuthStore();
 
-  userStore.dispatch('init');
+  authStore.dispatch('init');
 
-  const token = computed(() => userStore.state.token);
+  const token = computed(() => authStore.state.token);
 
   watch(
     token,

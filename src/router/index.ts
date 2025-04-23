@@ -30,15 +30,15 @@ router.onError((err, to) => {
 })
 
 router.beforeEach(async to => {
-  const userStore = useAuthStore();
+  const authStore = useAuthStore();
 
-  await userStore.dispatch('init');
+  await authStore.dispatch('init');
 
-  if(to.fullPath.includes('account/login') && userStore.state.isAuthenticated) {
+  if(to.fullPath.includes('account/login') && authStore.state.isAuthenticated) {
     return { path: '/', force: true };
   }
 
-  if (!userStore.state.isAuthenticated && !to.fullPath.includes('account/login')) {
+  if (!authStore.state.isAuthenticated && !to.fullPath.includes('account/login')) {
     if(to.fullPath.includes('account/me') || to.fullPath.includes('orders')) {
       console.log('redirect')
       return { path: '/account/login', force: true };
