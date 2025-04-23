@@ -12,6 +12,7 @@ declare module 'vue' {
     AppNavBar: typeof import('./src/components/AppNavBar.vue')['default']
     CardInfoOrder: typeof import('./src/components/Orders/CardInfoOrder.vue')['default']
     ListOrders: typeof import('./src/components/Orders/ListOrders.vue')['default']
+    OrderItemList: typeof import('./src/components/Orders/OrderItemList.vue')['default']
     ProductItemCard: typeof import('./src/components/ProductItemCard.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
