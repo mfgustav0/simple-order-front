@@ -9,9 +9,15 @@
   const modalVisualize = ref<boolean>(false);
   const orderVisualized = ref<Order | null>(null);
 
-  function openModal (order: Order) {
+  function openModal (order: Order): void {
     orderVisualized.value = order;
     modalVisualize.value = true;
+  }
+
+  function formatDate (dateString: string): string {
+    const date = new Date(dateString);
+
+    return date.toLocaleDateString();
   }
 </script>
 
@@ -24,7 +30,11 @@
         v-for="order in orders"
         :key="order.id"
       >
-        <v-list-item :subtitle="translateStatus(order.status)" :title="`Pedido #${order.id}`">
+        <v-list-item :title="`Pedido #${order.id}`">
+          <v-list-item-subtitle>
+            {{ translateStatus(order.status) }} - {{ formatDate(order.date) }}
+          </v-list-item-subtitle>
+
           <template #append>
             <v-btn
               color="grey-lighten-1"
