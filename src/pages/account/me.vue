@@ -2,7 +2,7 @@
   import ListOrders from '@/components/Orders/ListOrders.vue';
   import type { Order } from '@/entities/order';
   import type { OrderGateway } from '@/gateway/order.gateway';
-  import { useAuthStore } from '@/plugins/vuex';
+  import { useAuthStore } from '@/plugins/vuex/auth-store';
   import { inject, onMounted, ref } from 'vue';
 
   const orderGateway = inject('orderGateway') as OrderGateway;
@@ -16,9 +16,7 @@
 </script>
 
 <template>
-  <div>
-    <v-card class="mx-auto">
-      <ListOrders :orders="orders" />
-    </v-card>
-  </div>
+  <v-card class="mx-auto">
+    <ListOrders :orders="orders" />
+  </v-card>
 </template>

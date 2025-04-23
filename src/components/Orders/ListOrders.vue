@@ -39,7 +39,7 @@
       </template>
     </v-list>
 
-    <v-dialog v-model="modalVisualize" width="auto">
+    <v-dialog v-model="modalVisualize" width="full">
       <CardInfoOrder :order="orderVisualized" />
     </v-dialog>
   </div>
