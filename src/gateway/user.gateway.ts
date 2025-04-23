@@ -1,18 +1,26 @@
-import { useAuthStore } from '@/plugins/vuex';
 import type { Axios } from 'axios';
 
 export interface UserGateway {
-  me(): Promise<OutputMe>
+  withToken(token: string): UserGateway;
+
+  me(): Promise<OutputMe>;
 }
 
 export class UserGatewayAxios implements UserGateway {
+  private token: string = '';
+
   constructor (private readonly httpClient: Axios) {}
+
+  withToken (token: string): UserGateway {
+    this.token = token;
+
+    return this;
+  }
 
   async me (): Promise<OutputMe> {
     const headers: any = {};
-    const token = useAuthStore().state.token
-    if(token) {
-      headers['Authorization'] = 'Bearer ' + token;
+    if(this.token) {
+      headers['Authorization'] = 'Bearer ' + this.token;
     }
 
     const response = await this.httpClient.get(`/user/me`, {
