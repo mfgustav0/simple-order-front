@@ -17,7 +17,7 @@
   function formatDate (dateString: string | Date): string {
     const date = new Date(dateString);
 
-    return date.toLocaleDateString();
+    return date.toLocaleString();
   }
 </script>
 
@@ -31,9 +31,11 @@
         :key="order.id"
       >
         <v-list-item :title="`Pedido #${order.id}`">
-          <v-list-item-subtitle>
-            {{ translateStatus(order.status) }} - {{ formatDate(order.date) }}
-          </v-list-item-subtitle>
+          <div>
+            <v-chip :color="order.status == 'finished' ? 'green' : undefined" variant="flat">
+              {{ translateStatus(order.status) }}
+            </v-chip> - {{ formatDate(order.date) }}
+          </div>
 
           <template #append>
             <v-btn
