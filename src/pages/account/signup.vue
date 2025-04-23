@@ -1,6 +1,6 @@
 <script lang="ts" setup>
   import type { AuthGateway } from '@/gateway/auth.gateway';
-  import { useAuthStore } from '@/plugins/vuex';
+  import { useAuthStore } from '@/plugins/vuex/auth-store';
   import { inject, ref } from 'vue';
   import { useRouter } from 'vue-router';
 

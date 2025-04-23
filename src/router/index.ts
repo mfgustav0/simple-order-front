@@ -5,7 +5,7 @@
  */
 
 // Composables
-import { useAuthStore } from '@/plugins/vuex'
+import { useAuthStore } from '@/plugins/vuex/auth-store'
 import { createRouter, createWebHistory } from 'vue-router/auto'
 import { routes } from 'vue-router/auto-routes'
 

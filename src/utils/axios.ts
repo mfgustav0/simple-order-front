@@ -1,4 +1,4 @@
-import { store as authStore } from '@/plugins/vuex';
+import { store as authStore } from '@/plugins/vuex/auth-store';
 import axios, { AxiosError } from 'axios';
 
 const instance = axios.create({
@@ -9,7 +9,7 @@ const instance = axios.create({
 });
 
 instance.interceptors.response.use(response => response, function (error: AxiosError) {
-  if(error.status == 401) {
+  if(error.status == 401 && authStore.state.isAuthenticated) {
     authStore.dispatch('logout');
   }
 
