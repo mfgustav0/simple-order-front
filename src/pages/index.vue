@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-  import Carrousel from '@/components/Carrousel.vue';
   import ProductItemCard from '@/components/ProductItemCard.vue';
   import { type Product } from '@/entities/product.ts';
   import { type ProductGateway } from '@/gateway/product.gateway';
@@ -22,8 +21,6 @@
 
 <template>
   <v-row dense>
-    <Carrousel />
-
     <template v-if="loading">
       <v-col cols="12" md="6">
         <v-skeleton-loader
