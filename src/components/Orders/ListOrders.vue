@@ -30,11 +30,15 @@
         v-for="order in orders"
         :key="order.id"
       >
-        <v-list-item :title="`Pedido #${order.id}`">
-          <div>
+        <v-list-item>
+          <v-list-item-title>Pedido #{{ order.id }}</v-list-item-title>
+
+          <div class="d-flex justify-start align-center ga-4">
             <v-chip :color="order.status == 'finished' ? 'green' : undefined" variant="flat">
               {{ translateStatus(order.status) }}
-            </v-chip> - {{ formatDate(order.date) }}
+            </v-chip>
+
+            <span>{{ formatDate(order.date) }}</span>
           </div>
 
           <template #append>

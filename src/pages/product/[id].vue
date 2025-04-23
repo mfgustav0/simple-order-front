@@ -6,6 +6,7 @@
   import { useRoute } from 'vue-router'
   import { inject, onBeforeMount, ref } from 'vue';
   import type { OrderGateway } from '@/gateway/order.gateway';
+import { CreateOrder } from '@/use-cases/create-order';
 
   const authStore = useAuthStore();
   const orderStore = useOrderStore();
@@ -25,8 +26,15 @@
   });
 
   async function addItem (productId: string): Promise<void> {
-    if(!authStore.state.isAuthenticated || !orderStore.state.orderId) {
+    if(!authStore.state.isAuthenticated) {
       return;
+    }
+
+    if(!orderStore.state.orderId) {
+      const createOrder = new CreateOrder(orderGateway.withToken(authStore.state.token));
+      await createOrder.execute();
+
+      orderStore.dispatch('load', orderGateway);
     }
 
     try {
@@ -34,7 +42,7 @@
       error.value = '';
 
       await orderGateway.addItem({
-        orderId: orderStore.state.orderId,
+        orderId: orderStore.state.orderId as string,
         productId,
         quantity: 1,
       });
