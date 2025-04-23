@@ -14,7 +14,9 @@
   const productGateway = inject('productGateway') as ProductGateway;
   const orderGateway = inject('orderGateway') as OrderGateway;
   const product = ref<Product>({} as Product);
+  const error = ref<string|null>(null);
   const loading = ref<boolean>(false);
+  const updatingOrder = ref<boolean>(false);
 
   onBeforeMount(async () => {
     loading.value = true;
@@ -27,13 +29,22 @@
       return;
     }
 
-    await orderGateway.addItem({
-      orderId: orderStore.state.orderId,
-      productId,
-      quantity: 1,
-    });
+    try {
+      updatingOrder.value = true;
+      error.value = '';
 
-    orderStore.dispatch('load', orderGateway);
+      await orderGateway.addItem({
+        orderId: orderStore.state.orderId,
+        productId,
+        quantity: 1,
+      });
+
+      orderStore.dispatch('load', orderGateway);
+    } catch(exception) {
+      error.value = (exception as Error).message
+    } finally {
+      updatingOrder.value = false;
+    }
   }
 </script>
 
@@ -54,6 +65,14 @@
     </v-col>
     <v-col cols="12" md="6">
       <v-container>
+        <template v-if="error">
+          <v-alert
+            :text="error"
+            title="Erro ao finalizar o Pedido"
+            type="error"
+          />
+        </template>
+
         <h2>{{ product.name }}</h2>
 
         <v-divider
@@ -75,6 +94,7 @@
             block
             class="mt-2"
             color="indigo-darken-3"
+            :loading="updatingOrder"
             text="Adicionar Produto"
             type="button"
             variant="outlined"
