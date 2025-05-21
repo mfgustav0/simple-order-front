@@ -2,7 +2,7 @@ import { store as authStore } from '@/plugins/vuex/auth-store';
 import axios, { AxiosError } from 'axios';
 
 const instance = axios.create({
-  baseURL: 'http://localhost:3030',
+  baseURL: 'http://localhost:3000',
   headers: {
     'Content-Type': 'application/json',
   },
